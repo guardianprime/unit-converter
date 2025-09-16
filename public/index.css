@@ -1,0 +1,39 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Courier New", Courier, monospace;
+  padding: 20px;
+  color: brown;
+}
+
+nav {
+  width: 100%;
+}
+
+nav ul {
+  display: flex;
+  justify-content: space-between;
+}
+
+ul {
+  list-style: none;
+}
+
+h1 {
+  text-align: center;
+}
+
+nav ul li a {
+  text-decoration: none;
+  font-size: 1.3rem;
+  color: black;
+}
+
+form {
+  margin-top: 20px;
+  padding: 10px;
+}
