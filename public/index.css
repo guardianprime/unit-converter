@@ -34,7 +34,7 @@ nav ul li a {
   color: black;
 }
 
-form {
+.main__form {
   margin-top: 20px;
   padding: 10px;
   height: 60%;

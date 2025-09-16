@@ -27,7 +27,9 @@
   </div>
   <button type="submit">convert</button>
 </form>
-<% } else { %>
+<% } else if (error) {%>
+<p><%= error %></p>
+<%}else { %>
 <h1>result of your calculation</h1>
 <p><%- result %></p>
 <form method="get" action="/">

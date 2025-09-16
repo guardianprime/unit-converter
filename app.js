@@ -46,11 +46,11 @@ function convertTemperature(value, from, to) {
 
   //converting from celsius to another unit
   if (to === "C") {
-    return answer.toFixed(2);
+    return answer.toFixed(2) + to;
   } else if (to === "F") {
-    return ((answer * 9) / 5 + 32).toFixed(2);
+    return ((answer * 9) / 5 + 32).toFixed(2) + to;
   } else if (to === "K") {
-    return (answer + 273.15).toFixed(2);
+    return (answer + 273.15).toFixed(2) + to;
   }
 }
 
@@ -63,19 +63,35 @@ app.set("view engine", "ejs");
 app.set("views", "./views");
 
 app.get("/", (req, res) => {
-  res.render("homepage", { result: "", type: "length" });
+  res.render("homepage", {
+    result: "",
+    type: "length",
+    error: "please fill all forms",
+  });
 });
 
 app.get("/length", (req, res) => {
-  res.render("homepage", { result: "", type: "length" });
+  res.render("homepage", {
+    result: "",
+    type: "length",
+    error: "please fill all forms",
+  });
 });
 
 app.get("/weight", (req, res) => {
-  res.render("homepage", { result: "", type: "weight" });
+  res.render("homepage", {
+    result: "",
+    type: "weight",
+    error: "please fill all forms",
+  });
 });
 
 app.get("/temperature", (req, res) => {
-  res.render("homepage", { result: "", type: "temperature" });
+  res.render("homepage", {
+    result: "",
+    type: "temperature",
+    error: "please fill all forms",
+  });
 });
 
 app.post("/convert", (req, res) => {
@@ -86,7 +102,11 @@ app.post("/convert", (req, res) => {
       req.body.fromLength,
       req.body.toLength
     );
-    res.render("homepage", { result: answer, type: "length" });
+    res.render("homepage", {
+      result: answer,
+      type: "length",
+      error: "please fill all forms",
+    });
   } else if (req.body.fromWeight && req.body.toWeight) {
     answer = convertWeight(
       req.body.value,
@@ -100,9 +120,17 @@ app.post("/convert", (req, res) => {
       req.body.fromTemperature,
       req.body.toTemperature
     );
-    res.render("homepage", { result: answer, type: "temperature" });
+    res.render("homepage", {
+      result: answer,
+      type: "temperature",
+      error: "please fill all forms",
+    });
   } else {
-    res.send("please fill all forms");
+    res.render("homepage", {
+      result: answer,
+      type: "weight",
+      error: "please fill all forms",
+    });
   }
 });
 
