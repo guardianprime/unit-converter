@@ -10,6 +10,7 @@ const lengthUnits = {
   ft: 0.3048,
   yd: 0.9144,
   mi: 1609.344,
+  nmi: 1852,
 };
 
 const weightUnits = {
@@ -32,25 +33,29 @@ function convertWeight(value, from, to) {
   return result.toFixed(2) + to;
 }
 
-function convertTemperature(value, from, to) {
+function convertTemperature(numValue, from, to) {
   let answer;
 
   //converting from another unit to celsius
   if (from === "C") {
-    answer = value;
+    answer = numValue;
   } else if (from === "F") {
-    answer = (value - 32) * (5 / 9);
+    answer = (numValue - 32) * (5 / 9);
   } else if (from === "K") {
-    answer = value - 273.15;
+    answer = numValue - 273.15;
+  } else {
+    throw new Error("Invalid 'from' unit");
   }
 
   //converting from celsius to another unit
   if (to === "C") {
-    return answer.toFixed(2) + to;
+    return answer.toFixed(2) + "°" + to;
   } else if (to === "F") {
-    return ((answer * 9) / 5 + 32).toFixed(2) + to;
+    return ((answer * 9) / 5 + 32).toFixed(2) + "°" + to;
   } else if (to === "K") {
     return (answer + 273.15).toFixed(2) + to;
+  } else {
+    throw new Error("Invalid 'to' unit");
   }
 }
 
@@ -66,7 +71,7 @@ app.get("/", (req, res) => {
   res.render("homepage", {
     result: "",
     type: "length",
-    error: "please fill all forms",
+    error: "",
   });
 });
 
@@ -74,7 +79,7 @@ app.get("/length", (req, res) => {
   res.render("homepage", {
     result: "",
     type: "length",
-    error: "please fill all forms",
+    error: "",
   });
 });
 
@@ -82,7 +87,7 @@ app.get("/weight", (req, res) => {
   res.render("homepage", {
     result: "",
     type: "weight",
-    error: "please fill all forms",
+    error: "",
   });
 });
 
@@ -90,7 +95,7 @@ app.get("/temperature", (req, res) => {
   res.render("homepage", {
     result: "",
     type: "temperature",
-    error: "please fill all forms",
+    error: "",
   });
 });
 
@@ -105,7 +110,7 @@ app.post("/convert", (req, res) => {
     res.render("homepage", {
       result: answer,
       type: "length",
-      error: "please fill all forms",
+      error: "",
     });
   } else if (req.body.fromWeight && req.body.toWeight) {
     answer = convertWeight(
@@ -113,7 +118,7 @@ app.post("/convert", (req, res) => {
       req.body.fromWeight,
       req.body.toWeight
     );
-    res.render("homepage", { result: answer, type: "weight" });
+    res.render("homepage", { result: answer, type: "weight", error: "" });
   } else if (req.body.fromTemperature && req.body.toTemperature) {
     answer = convertTemperature(
       req.body.value,
@@ -123,12 +128,12 @@ app.post("/convert", (req, res) => {
     res.render("homepage", {
       result: answer,
       type: "temperature",
-      error: "please fill all forms",
+      error: "",
     });
   } else {
     res.render("homepage", {
-      result: answer,
-      type: "weight",
+      result: "",
+      type: "",
       error: "please fill all forms",
     });
   }
